@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G.Y.A.N.I. Interface</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a192f;
+            color: #64ffda;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        /* Landscape Mode Layout */
+        @media (orientation: landscape) {
+            body {
+                flex-direction: row;
+            }
+
+            #header {
+                width: 300px;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start; /* Uppermost alignment */
+                border-right: 2px solid #1e3a8a;
+                border-bottom: none;
+            }
+
+            #main-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            #chat-container {
+                flex: 1;
+                margin: 0;
+                border-radius: 0;
+                max-width: none;
+            }
+
+            #chat-box {
+                height: calc(100vh - 210px); /* Adjust to fit in window */
+            }
+
+            #footer {
+                border-top: none;
+                padding: 10px;
+            }
+        }
+
+        #header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #0a192f 0%, rgba(10, 25, 47, 0.9) 100%);
+            border-bottom: 2px solid #1e3a8a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(100, 255, 218, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(100, 255, 218, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .logo-image {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(2, 12, 27, 0.3);
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            border: 2px solid rgba(100, 255, 218, 0.5);
+        }
+
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .logo-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg,
+                rgba(100, 255, 218, 0.1) 0%,
+                transparent 50%,
+                rgba(100, 255, 218, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            color: #64ffda;
+            text-shadow: 0 0 10px #64ffda;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64ffda, transparent);
+        }
+
+        .subtitle {
+            color: #8892b0;
+            font-size: 1.2em;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #description {
+            margin: 20px;
+            color: #8892b0;
+            font-size: 1em;
+            text-align: left; /* Align text to the left */
+            padding: 15px; /* Add padding */
+            border: 1px solid #1e3a8a; /* Border color */
+            background-color: rgba(2, 12, 27, 0.7); /* Background color */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.3); /* Shadow */
+        }
+
+        #linkedin {
+            color: red; /* Change text color to red */
+            font-size: 0.9em;
+            text-align: left;
+            margin: 10px 20px; /* Add margin for spacing */
+        }
+
+        #linkedin a {
+            color: red; /* Make link red */
+            text-decoration: none; /* Remove underline */
+        }
+
+        #linkedin a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        #chat-container {
+            flex: 1;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(2, 12, 27, 0.7);
+            border-radius: 15px;
+            border: 1px solid #1e3a8a;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
+            position: relative;
+        }
+
+        #chat-box {
+            height: 350px; /* Set height to fit within the window */
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(10, 25, 47, 0.5);
+            border-radius: 10px;
+            border: 1px solid #1e3a8a;
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in;
+            position: relative;
+        }
+
+        .user-message {
+            background: rgba(30, 58, 138, 0.3);
+            border: 1px solid #1e3a8a;
+            margin-left: auto;
+            color: #64ffda;
+        }
+
+        .bot-message {
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid #64ffda;
+            margin-right: auto;
+            color: #8892b0;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            background: rgba(10, 25, 47, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #1e3a8a;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(2, 12, 27, 0.7);
+            border: 1px solid #1e3a8a;
+            border-radius: 5px;
+            color: #64ffda;
+            font-size: 16px;
+        }
+
+        #send-button {
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        #footer {
+            text-align: center;
+            padding: 10px;
+            color: #8892b0;
+            background: linear-gradient(0deg, #0a192f 0%, rgba(10, 25, 47, 0.9) 100%);
+            border-top: 2px solid #1e3a8a;
+        }
+
+        .acronym {
+            display: inline-block;
+            margin: 0 5px;
+            color: #64ffda;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div class="logo-image">
+            <img src="https://img.freepik.com/premium-vector/cute-robot-waving-hand-cartoon-illustration_635131-781.jpg?w=740" alt="Logo">
+        </div>
+        <h1 class="logo">G.Y.A.N.I.</h1>
+        <p class="subtitle">
+            <span class="acronym">G</span>et
+            <span class="acronym">Y</span>our
+            <span class="acronym">A</span>nswers
+            <span class="acronym">N</span>ew
+            <span class="acronym">I</span>nsights
+        </p>
+        <div id="description">
+            🌟 Nishant Kumar | B.Tech in Computer Science (Cyber Security) <br>
+            Introducing a Personal Assistant Chatbot! 🤖✨<br>
+            Built with NLP and Regex to streamline your tasks and enhance your digital experience!
+        </div>
+        <div id="linkedin">
+            For insights, follow Nishant on LinkedIn: <a href="https://www.linkedin.com/feed/" target="_blank">LinkedIn Profile</a>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div id="chat-container">
+            <div id="chat-box"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Ask me anything..." autofocus>
+                <button id="send-button">SEND</button>
+            </div>
+        </div>
+
+        <div id="footer">
+            © 2024 G.Y.A.N.I. Interface | Made with NLP, FLASK, and REGEX | All rights are reserved with Nishant Kumar <a href="https://www.linkedin.com/in/nishant-kumar-cyber/" target="_blank">LinkedIn Profile</a>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            setTimeout(() => {
+                $('#chat-box').append(`
+                    <div class="message bot-message">
+                        Namaste! I am G.Y.A.N.I., your knowledge companion. How may I assist you today?
+                    </div>
+                `);
+            }, 1000);
+
+            function sendMessage() {
+                let userInput = $('#user-input').val();
+                if (userInput) {
+                    $('#chat-box').append(`<div class="message user-message">${userInput}</div>`);
+                    $('#user-input').val('');
+
+                    $.get('/get', { msg: userInput }).done(function(data) {
+                        setTimeout(() => {
+                            $('#chat-box').append(`<div class="message bot-message">${data}</div>`);
+                            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+                        }, 500);
+                    });
+                }
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+            }
+
+            $('#send-button').click(sendMessage);
+
+            $('#user-input').keypress(function(e) {
+                if (e.which === 13) {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
