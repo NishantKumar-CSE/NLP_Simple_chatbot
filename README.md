@@ -24,7 +24,7 @@ This project involves the development of a personal assistant chatbot utilizing 
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/NishantKumar-CSE/Very-Simple-chatbot.git
+   git clone https://github.com/NishantKumar-CSE/NLP_Simple_chatbot.git
    ```
 2. Navigate to the project directory:
    ```bash
