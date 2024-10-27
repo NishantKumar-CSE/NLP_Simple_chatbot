@@ -10,6 +10,7 @@ Program: B.Tech in Computer Science Engineering (Specialization: Cyber Security)
 ## Project Overview
 This project involves the development of a personal assistant chatbot utilizing Natural Language Processing (NLP) and regular expressions (regex). The chatbot is designed to provide users with efficient assistance in various tasks, showcasing the application of advanced technologies in enhancing user experience.
 
+![Chatbot Demo](.Sample.png)
 ## Features
 - Responds to user inquiries about its name and purpose.
 - Answers questions related to weather, location, and general knowledge.
